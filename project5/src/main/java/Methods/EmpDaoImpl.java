@@ -12,292 +12,123 @@ import java.util.Scanner;
 
 import pojoClass.pojo;
 
-//import org.json.JSONArray;
-//import org.json.JSONObject;
 
 public class EmpDaoImpl {
 	Scanner sc=new Scanner(System.in);
 	public Connection getDb() throws Exception {
 		Class.forName("com.mysql.cj.jdbc.Driver");  
 		Connection con=DriverManager.getConnection(  
-		"jdbc:mysql://localhost:3306/empdb","root","root");  
-		
+		"jdbc:mysql://localhost:3306/empdb","root","root");  		
 		return con;
 		
 	}
 
-
-
-
 	DBConnection dbConnection=new DBConnection();
-	public void createEmployee(pojo emp) {
-	Connection con=DBConnection.creatDBConnection();
-	String type=emp.getType();
-	String query="insert into employee values(?,?,?,?)";
-	PreparedStatement pstmt=null;
-	try {
-		pstmt=con.prepareStatement(query);
-		pstmt.setInt(1, emp.getId());
-		pstmt.setString(2, emp.getName());
-		pstmt.setDouble(3, emp.getSalary());
-		pstmt.setString(4, emp.getType());
-		int cnt=pstmt.executeUpdate();
-		if(cnt!=0) {
-			System.out.println("Updated successfully");
+	public void insert(String query, pojo emp) {
+			Connection con=DBConnection.creatDBConnection();	
+			PreparedStatement pstmt=null;		
+				try {
+					pstmt=con.prepareStatement(query);
+					pstmt.setInt(1, emp.getId());
+					pstmt.setString(2, emp.getName());
+					pstmt.setDouble(3, emp.getSalary());
+					pstmt.setString(4, emp.getType());
+					int cnt=pstmt.executeUpdate();
+					if(cnt!=0) {
+						System.out.println("Updated successfully");
+					}
+		}catch (SQLException e) {
+			e.printStackTrace();
 		}
-		
-	}catch (SQLException e) {
-		e.printStackTrace();
-	}
-	finally {
+		finally {
+			try {
+				pstmt.close();
+				
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		}
+	public void insertType(String query, pojo emp) {
+		Connection con=DBConnection.creatDBConnection();	
+		PreparedStatement pstmt=null;	
 		try {
-			pstmt.close();
-			
+		
+				pstmt=con.prepareStatement(query);
+				pstmt.setInt(1, emp.getId());
+				pstmt.setString(2, emp.getName());
+				int cnt=pstmt.executeUpdate();
+				if(cnt!=0) {
+					System.out.println("Updated successfully");
+				}
+		
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+			finally {
+				try {
+					pstmt.close();
+					
+				} catch (SQLException e) {
+					
+					e.printStackTrace();
+				}
+			}
+		}
+	public void put(String query,pojo emp) {
+		Connection con=DBConnection.creatDBConnection();
+		PreparedStatement pstmt=null;
+		try {
+			 pstmt=con.prepareStatement(query);
+			pstmt.setString(1, emp.getName());
+			pstmt.setDouble(2, emp.getSalary());
+			pstmt.setString(3, emp.getType());
+			pstmt.setInt(4, emp.getId());
+			int cnt=pstmt.executeUpdate();
+			if(cnt!=0) {
+				System.out.println("Updated successfully");
+			}		
 		} catch (SQLException e) {
-			
-			e.printStackTrace();
-		}
-	}
-	if(type.equals("permanent")) {
-		String queryp="insert into permanent values(?,?)";
-		PreparedStatement pstmt2=null;
-		try {
-			pstmt2=con.prepareStatement(queryp);
-			pstmt2.setInt(1, emp.getId());
-			pstmt2.setString(2, emp.getName());
-			int cnt=pstmt2.executeUpdate();
-			if(cnt!=0) {
-				System.out.println("Updated successfully");
-			}
-		}catch (SQLException e) {
 			e.printStackTrace();
 		}
 		finally {
 			try {
-				pstmt2.close();
+				pstmt.close();
 				
 			} catch (SQLException e) {
 				
 				e.printStackTrace();
 			}
 		}
-		
 	}
-	if(type.equals("parttime")) {
-		String queryp="insert into parttime values(?,?)";
-		PreparedStatement pstmt3=null;
-		try {
-			pstmt3=con.prepareStatement(queryp);
-			pstmt3.setInt(1, emp.getId());
-			pstmt3.setString(2, emp.getName());
-			int cnt=pstmt3.executeUpdate();
-			if(cnt!=0) {
-				System.out.println("Updated successfully");
-			}
-			
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
-		finally {
-			try {
-				pstmt3.close();
-				
-			} catch (SQLException e) {
-				
-				e.printStackTrace();
-			}
-		}
-		
-		
-	}
-	if(type.equals("contract")) {
-		String queryp="insert into contract values(?,?)";
-		PreparedStatement pstmt4=null;
-		try {
-			pstmt4=con.prepareStatement(queryp);
-			pstmt4.setInt(1, emp.getId());
-			pstmt4.setString(2, emp.getName());
-			int cnt=pstmt4.executeUpdate();
-			if(cnt!=0) {
-				System.out.println("Updated successfully");
-			}
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
-		finally {
-			try {
-				pstmt4.close();
-				con.close();
-			} catch (SQLException e) {
-				
-				e.printStackTrace();
-			}
-		}
-		
-		
-	}
-	}
-	public void modify(pojo emp) {
+	public void putType(String query,pojo emp) {
 		Connection con=DBConnection.creatDBConnection();
-		
-			int id=emp.getId();
-			String type=emp.getType();
-			String query="update employee set name=? where id=?";
-			PreparedStatement pstmt5=null;
+		PreparedStatement pstmt=null;
+		try {
+			 pstmt=con.prepareStatement(query);
+			pstmt.setString(1, emp.getName());
+			pstmt.setInt(2, emp.getId());
+			int cnt=pstmt.executeUpdate();
+			if(cnt!=0) {
+				System.out.println("Updated successfully");
+			}
 			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
 			try {
-				 pstmt5=con.prepareStatement(query);
-				pstmt5.setString(1, emp.getName());
-				pstmt5.setInt(2, id);
-				int cnt=pstmt5.executeUpdate();
-				if(cnt!=0) {
-					System.out.println("Updated successfully");
-				}
-			
+				pstmt.close();
 			} catch (SQLException e) {
+				
 				e.printStackTrace();
 			}
-			finally {
-				try {
-					pstmt5.close();
-					
-				} catch (SQLException e) {
-					
-					e.printStackTrace();
-				}
-			}
-			
-	
-			String query2="update employee set salary=? where id=?";
-			PreparedStatement pstmt6=null;
-			try {
-				pstmt6=con.prepareStatement(query2);
-				pstmt6.setDouble(1, emp.getSalary());
-				pstmt6.setInt(2, id);
-				int cnt=pstmt6.executeUpdate();
-				if(cnt!=0) {
-					System.out.println("Updated successfully");
-				}
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			finally {
-				try {
-					pstmt6.close();
-				
-				} catch (SQLException e) {
-					
-					e.printStackTrace();
-				}
-			}
-			 
-			String query3="update employee set type=? where id=?";
-			PreparedStatement pstmt7=null;
-			try {
-				 pstmt7=con.prepareStatement(query3);
-				pstmt7.setString(1, emp.getType());
-				pstmt7.setInt(2, id);
-				int cnt=pstmt7.executeUpdate();
-				if(cnt!=0) {
-					System.out.println("Updated successfully");
-				}
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			finally {
-				try {
-					pstmt7.close();
-					
-				} catch (SQLException e) {
-					
-					e.printStackTrace();
-				}
-			}
-			if(type.equals("permanent")) {
-				String queryp="update permanent set name=? where id=?";
-				PreparedStatement pstmt8=null;
-				try {
-					 pstmt8=con.prepareStatement(queryp);
-					pstmt8.setString(1, emp.getName());
-					pstmt8.setInt(2, emp.getId());
-					int cnt=pstmt8.executeUpdate();
-					if(cnt!=0) {
-						System.out.println("Updated successfully");
-					}
-					
-				}catch (SQLException e) {
-					e.printStackTrace();
-				}
-				finally {
-					try {
-						pstmt8.close();
-					} catch (SQLException e) {
-						
-						e.printStackTrace();
-					}
-				}
-				
-				
-			}
-			if(type.equals("parttime")) {
-				String querypt="update parttime set name=? where id=?";
-				PreparedStatement pstmt9=null;
-				try {
-					 pstmt9=con.prepareStatement(querypt);
-					pstmt9.setString(1, emp.getName());
-					pstmt9.setInt(2, emp.getId());
-					int cnt=pstmt9.executeUpdate();
-					if(cnt!=0) {
-						System.out.println("Updated successfully");
-					}
-					
-				}catch (SQLException e) {
-					e.printStackTrace();
-				}
-				finally {
-					try {
-						pstmt9.close();
-					} catch (SQLException e) {
-					
-						e.printStackTrace();
-					}
-				}
-				
-			}
-			if(type.equals("contract")) {
-				String queryc="update contract set name=? where id=?";
-				PreparedStatement pstmt10=null;
-				try {
-					pstmt10=con.prepareStatement(queryc);
-					pstmt10.setString(1, emp.getName());
-					pstmt10.setInt(2, emp.getId());
-					int cnt=pstmt10.executeUpdate();
-					if(cnt!=0) {
-						System.out.println("Updated successfully");
-					}
-				}catch (SQLException e) {
-					e.printStackTrace();
-				}
-				finally {
-					try {
-						pstmt10.close();
-						con.close();
-					} catch (SQLException e) {
-		
-						e.printStackTrace();
-					}
-				}
-			}
-			
-    		
-		}		
-	
-
-	public void delete(String type,int id) {
+		}
+	}
+	public void remove(String query,int id) {
 		Connection con=DBConnection.creatDBConnection();
-		String query="delete from employee where id=?";
+	
 		PreparedStatement pstmt11=null;
 		try {
 			 pstmt11 = con.prepareStatement(query);
@@ -317,89 +148,84 @@ public class EmpDaoImpl {
 				e.printStackTrace();
 			}
 		}
-		if(type.equals("permanent")) {
-			String queryp="delete from permanent where id=?";
-			PreparedStatement pstmt12=null;
-			try {
-				pstmt12 = con.prepareStatement(queryp);
-				pstmt12.setInt(1, id);
-				int cnt=pstmt12.executeUpdate();
-				if(cnt!=0) {
-					System.out.println("deleted successfully");
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			finally {
-				try {
-					pstmt12.close();
-				} catch (SQLException e) {
+	}
 
-					e.printStackTrace();
-				}
-			}
-						
-		}
-		if(type.equals("parttime")) {
-			String querypt="delete from parttime where id=?";
-			PreparedStatement pstmt13=null;
-			try {
-				pstmt13 = con.prepareStatement(querypt);
-				pstmt13.setInt(1, id);
-				int cnt=pstmt13.executeUpdate();
-				if(cnt!=0) {
-					System.out.println("deleted successfully");
-				}
-			}catch (SQLException e) {
-				e.printStackTrace();
-			}
-			finally {
-				try {
-					pstmt13.close();
-				} catch (SQLException e) {
+		
+	public void createEmployee(pojo emp) {
+		String type=emp.getType();
+		String query="insert into employee values(?,?,?,?)";
 	
-					e.printStackTrace();
-				}
-			}
+		insert(query,emp);		
+			String queryp;
 			
-			
-		}
-		if(type.equals("contract")) {
-			String queryc="delete from contract where id=?";
-			PreparedStatement pstmt14=null;
-			try {
-				pstmt14 = con.prepareStatement(queryc);
-				pstmt14.setInt(1, id);
-				int cnt=pstmt14.executeUpdate();
-				if(cnt!=0) {
-					System.out.println("deleted successfully");
-					
-				}
-			}catch (SQLException e) {
-				e.printStackTrace();
+			switch(type) {			
+			case "permanent":
+				queryp="insert into permanent values(?,?)";
+				insertType(queryp,emp);
+				break;
+			case "parttime":
+				queryp="insert into parttime values(?,?)";
+				insertType(queryp,emp);
+				break;
+			case "contract":
+				queryp="insert into contract values(?,?)";
+				insertType(queryp,emp);
+				break;
+				
 			}
-			finally {
-				try {
-					pstmt14.close();
-					con.close();
-				} catch (SQLException e) {
-
-					e.printStackTrace();
-				}
 			}
 	
+	public void modify(pojo emp) {
+				
+			String type=emp.getType();
+			String query="update employee set name=?,set salary=?,set type=? where id=?";
+			put(query, emp);
+			switch(type) {			
+			case "permanent":
+				String queryp="update permanent set name=? where id=?";
+				putType(queryp,emp);
+				break;
+			case "parttime":
+				String querypt="update parttime set name=? where id=?";
+				putType(querypt,emp);
+				break;
+			case "contract":
+				String queryc="update contract set name=? where id=?";
+				putType(queryc,emp);
+				break;
+			}
+			
+	}
+	
+	public void delete(String type,int id) {
+		
+		String query="delete from employee where id=?";
+		remove(query,id);
+		switch(type) {			
+		case "permanent":
+			String queryp="delete from employee where id=?";
+			remove(queryp,id);
+			break;
+		case "parttime":
+			String querypt="delete from employee where id=?";
+			remove(querypt,id);
+			break;
+		case "contract":
+			String queryc="delete from employee where id=?";
+			remove(queryc,id);
+			break;
 		}
 		
 	}
-		
 	
 	public void viewEmp() {
 		Connection con=DBConnection.creatDBConnection();
 		String query="select * from employee";	
 		Statement pstmt15=null;
+		ResultSet result = null;
 			try {
 				pstmt15=con.createStatement();
-				ResultSet result=pstmt15.executeQuery(query);
+				result=pstmt15.executeQuery(query);
 				while(result.next()) {
 					System.out.println("Employee id - "+ result.getInt(1)+" Employee Name - "+result.getString(2)+" Employee Salary- "+result.getDouble(3)+" Employee Type - "+result.getString(4));
 				
@@ -411,6 +237,7 @@ public class EmpDaoImpl {
 			finally {
 				try {
 					pstmt15.close();
+					result.close();
 				} catch (SQLException e) {
 	
 					e.printStackTrace();
@@ -422,26 +249,18 @@ public class EmpDaoImpl {
 		Connection con=DBConnection.creatDBConnection();
 		PreparedStatement pstmt16=null;
 		Hashtable<Integer, pojo> hMap=new Hashtable<Integer, pojo>();
+		 ResultSet rs=null;
 		try {
 			pstmt16 = con.prepareStatement("select * from employee");
 		
-		   ResultSet rs=pstmt16.executeQuery();   		 
-//		   JSONArray employeeArray=new JSONArray();
+		   rs=pstmt16.executeQuery();   		 
+
 		   while(rs.next()) {
 			   pojo e=new pojo(rs.getInt("id"), rs.getString("name"), rs.getDouble("id"), rs.getString("type"));
 			   hMap.put(rs.getInt("id"), e);
-			   
-//			    JSONObject empy=new JSONObject(); 
-//			     
-//			    empy.put("empId",rs.getInt("id"));
-//		        empy.put("empName",rs.getString("name"));
-//		        empy.put("empSalary",rs.getDouble("salary"));
-//		        empy.put("empType",rs.getString("type"));
-//		  
-//		        employeeArray.put(empy);
-		        
+  
 		   }  	
-//		   System.out.println(employeeArray);
+
 	}catch (SQLException e) {
 		e.printStackTrace();
 	}
@@ -449,6 +268,7 @@ public class EmpDaoImpl {
 			try {
 				pstmt16.close();
 				con.close();
+				rs.close();
 			} catch (SQLException e) {
 			
 				e.printStackTrace();
@@ -464,62 +284,42 @@ public class EmpDaoImpl {
 		
 		PreparedStatement pstmt16=null;
 		Hashtable<Integer, pojo> hMap=new Hashtable<Integer, pojo>();
+		ResultSet rs=null;
 		try {
 			Connection con=getDb();
 			String q="select * from employee where id=?";
 			pstmt16 = con.prepareStatement(q);
 			pstmt16.setInt(1, id);		
-			ResultSet rs=pstmt16.executeQuery();   
-//		   JSONArray employeeArray=new JSONArray();
+			rs=pstmt16.executeQuery();   
+
 		   System.out.println("in while");
 
 		   while(rs.next()) {
 			   pojo e=new pojo(rs.getInt("id"), rs.getString("name"), rs.getDouble("salary"), rs.getString("type"));
 			   hMap.put(rs.getInt("id"), e);
 			   
-//			    JSONObject empy=new JSONObject(); 
-//			     
-//			    empy.put("empId",rs.getInt("id"));
-//		        empy.put("empName",rs.getString("name"));
-//		        empy.put("empSalary",rs.getDouble("salary"));
-//		        empy.put("empType",rs.getString("type"));
-//		  
-//		        employeeArray.put(empy);
 
 		   }
 		   return hMap;
-//		   System.out.println(employeeArray);
+
 	}catch (SQLException e) {
 		e.printStackTrace();
 	} catch (Exception e1) {
-		// TODO Auto-generated catch block
+	
 		e1.printStackTrace();
 	}
 		finally {
 			try {
 				pstmt16.close();
+				rs.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+	
 				e.printStackTrace();
 			}
 
 		}
-		return hMap;
-		
+		return hMap;		
 	
 	}
-	
-	
-	
-//	public void exitDB() {
-//			try {
-//				DBConnection.creatDBConnection().close();
-//				} catch (SQLException e) {
-//					e.printStackTrace();
-//					}
-//			}
-			 
-	
-
 	
 }

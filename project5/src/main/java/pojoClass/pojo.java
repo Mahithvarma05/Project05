@@ -14,6 +14,7 @@ public class pojo {
 		this.name = name;
 		this.salary = salary;
 		this.type = type;
+		
 	}
 	public int getId() {
 		return id;
