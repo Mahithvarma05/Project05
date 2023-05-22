@@ -1,14 +1,14 @@
 package pojoClass;
 
-public class pojo {
+public class Pojo {
 	private int id;
 	private String name;
 	private double salary;
 	private String type;
-	public pojo() {
+	public Pojo() {
 		
 	}
-	public pojo(int id, String name, double salary, String type) {
+	public Pojo(int id, String name, double salary, String type) {
 		super();
 		this.id = id;
 		this.name = name;

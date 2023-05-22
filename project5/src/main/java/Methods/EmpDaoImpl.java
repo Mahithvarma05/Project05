@@ -1,8 +1,8 @@
 package Methods;
 
 
+
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,73 +10,70 @@ import java.sql.Statement;
 import java.util.Hashtable;
 import java.util.Scanner;
 
-import pojoClass.pojo;
+
+
+import pojoClass.Pojo;
 
 
 public class EmpDaoImpl {
-	Scanner sc=new Scanner(System.in);
-	public Connection getDb() throws Exception {
-		Class.forName("com.mysql.cj.jdbc.Driver");  
-		Connection con=DriverManager.getConnection(  
-		"jdbc:mysql://localhost:3306/empdb","root","root");  		
-		return con;
-		
-	}
+	static Scanner sc=new Scanner(System.in);
+	static java.util.logging.Logger log = java.util.logging.Logger.getLogger("EmpDaoImpl");
 
-	DBConnection dbConnection=new DBConnection();
-	public void insert(String query, pojo emp) {
-			Connection con=DBConnection.creatDBConnection();	
-			PreparedStatement pstmt=null;		
-				try {
-					pstmt=con.prepareStatement(query);
-					pstmt.setInt(1, emp.getId());
-					pstmt.setString(2, emp.getName());
-					pstmt.setDouble(3, emp.getSalary());
-					pstmt.setString(4, emp.getType());
-					int cnt=pstmt.executeUpdate();
-					if(cnt!=0) {
-						System.out.println("Updated successfully");
-					}
-		}catch (SQLException e) {
+	public void insert(String query, Pojo emp) {
+		Connection con=DBConnection.creatDBConnection();	
+		PreparedStatement pstmt=null;		
+		try {
+			pstmt=con.prepareStatement(query);
+			pstmt.setInt(1, emp.getId());
+			pstmt.setString(2, emp.getName());
+			pstmt.setDouble(3, emp.getSalary());
+			pstmt.setString(4, emp.getType());
+			int cnt=pstmt.executeUpdate();
+			if(cnt!=0) {
+				System.out.println("Updated successfully");
+			}
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println(e);
 		}
 		finally {
 			try {
 				pstmt.close();
-				
 			} catch (SQLException e) {
-				
 				e.printStackTrace();
 			}
 		}
-		}
-	public void insertType(String query, pojo emp) {
+	}
+	public void insertType(String query, Pojo emp) {
 		Connection con=DBConnection.creatDBConnection();	
 		PreparedStatement pstmt=null;	
 		try {
+			pstmt=con.prepareStatement(query);
+			pstmt.setInt(1, emp.getId());
+			pstmt.setString(2, emp.getName());
+			int cnt=pstmt.executeUpdate();
+			if(cnt!=0) {
+				System.out.println("Updated successfully");
+				
+				
 		
-				pstmt=con.prepareStatement(query);
-				pstmt.setInt(1, emp.getId());
-				pstmt.setString(2, emp.getName());
-				int cnt=pstmt.executeUpdate();
-				if(cnt!=0) {
-					System.out.println("Updated successfully");
-				}
+			}
 		
-			}catch (SQLException e) {
+		}
+		catch (SQLException e) {
+				e.printStackTrace();
+		}
+		finally {
+			try {
+				pstmt.close();
+			} 
+			catch (SQLException e) {
 				e.printStackTrace();
 			}
-			finally {
-				try {
-					pstmt.close();
-					
-				} catch (SQLException e) {
-					
-					e.printStackTrace();
-				}
-			}
 		}
-	public void put(String query,pojo emp) {
+	}
+	public void put(String query,Pojo emp) {
 		Connection con=DBConnection.creatDBConnection();
 		PreparedStatement pstmt=null;
 		try {
@@ -102,7 +99,7 @@ public class EmpDaoImpl {
 			}
 		}
 	}
-	public void putType(String query,pojo emp) {
+	public void putType(String query,Pojo emp) {
 		Connection con=DBConnection.creatDBConnection();
 		PreparedStatement pstmt=null;
 		try {
@@ -151,7 +148,7 @@ public class EmpDaoImpl {
 	}
 
 		
-	public void createEmployee(pojo emp) {
+	public void createEmployee(Pojo emp) {
 		String type=emp.getType();
 		String query="insert into employee values(?,?,?,?)";
 	
@@ -175,7 +172,7 @@ public class EmpDaoImpl {
 			}
 			}
 	
-	public void modify(pojo emp) {
+	public void modify(Pojo emp) {
 				
 			String type=emp.getType();
 			String query="update employee set name=?,set salary=?,set type=? where id=?";
@@ -197,21 +194,21 @@ public class EmpDaoImpl {
 			
 	}
 	
-	public void delete(String type,int id) {
-		
+	public void delete(int id) {
+		String type = viewJSON(id).getType();
 		String query="delete from employee where id=?";
 		remove(query,id);
 		switch(type) {			
 		case "permanent":
-			String queryp="delete from employee where id=?";
+			String queryp="delete from permanent where id=?";
 			remove(queryp,id);
 			break;
 		case "parttime":
-			String querypt="delete from employee where id=?";
+			String querypt="delete from parttime where id=?";
 			remove(querypt,id);
 			break;
 		case "contract":
-			String queryc="delete from employee where id=?";
+			String queryc="delete from contract where id=?";
 			remove(queryc,id);
 			break;
 		}
@@ -245,10 +242,10 @@ public class EmpDaoImpl {
 			}
 							
 	}
-	public Hashtable<Integer,pojo> viewJSON() {
+	public Hashtable<Integer,Pojo> viewJSON() {
 		Connection con=DBConnection.creatDBConnection();
 		PreparedStatement pstmt16=null;
-		Hashtable<Integer, pojo> hMap=new Hashtable<Integer, pojo>();
+		Hashtable<Integer, Pojo> hMap=new Hashtable<Integer, Pojo>();
 		 ResultSet rs=null;
 		try {
 			pstmt16 = con.prepareStatement("select * from employee");
@@ -256,7 +253,7 @@ public class EmpDaoImpl {
 		   rs=pstmt16.executeQuery();   		 
 
 		   while(rs.next()) {
-			   pojo e=new pojo(rs.getInt("id"), rs.getString("name"), rs.getDouble("id"), rs.getString("type"));
+			   Pojo e=new Pojo(rs.getInt("id"), rs.getString("name"), rs.getDouble("id"), rs.getString("type"));
 			   hMap.put(rs.getInt("id"), e);
   
 		   }  	
@@ -278,15 +275,13 @@ public class EmpDaoImpl {
 		
 	
 	}
-	
-	
-	public Hashtable<Integer,pojo> viewJSON(int id)  {
+
+	public Pojo viewJSON(int id)  {
 		
 		PreparedStatement pstmt16=null;
-		Hashtable<Integer, pojo> hMap=new Hashtable<Integer, pojo>();
 		ResultSet rs=null;
 		try {
-			Connection con=getDb();
+			Connection con=DBConnection.creatDBConnection();
 			String q="select * from employee where id=?";
 			pstmt16 = con.prepareStatement(q);
 			pstmt16.setInt(1, id);		
@@ -295,19 +290,16 @@ public class EmpDaoImpl {
 		   System.out.println("in while");
 
 		   while(rs.next()) {
-			   pojo e=new pojo(rs.getInt("id"), rs.getString("name"), rs.getDouble("salary"), rs.getString("type"));
-			   hMap.put(rs.getInt("id"), e);
-			   
+			   Pojo e=new Pojo(rs.getInt("id"), rs.getString("name"), rs.getDouble("salary"), rs.getString("type"));
+			   return e;
 
 		   }
-		   return hMap;
+		   return null;
 
 	}catch (SQLException e) {
 		e.printStackTrace();
-	} catch (Exception e1) {
-	
-		e1.printStackTrace();
 	}
+
 		finally {
 			try {
 				pstmt16.close();
@@ -318,8 +310,8 @@ public class EmpDaoImpl {
 			}
 
 		}
-		return hMap;		
+		return null;		
 	
+
 	}
-	
 }

@@ -4,34 +4,35 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-  <servlet>
-  	<servlet-name>employee</servlet-name>
-  	<display-name>employee</display-name>
-  	<description></description>
-  	<servlet-class>servlets.employee</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>permanent</servlet-name>
-  	<display-name>permanent</display-name>
-  	<description></description>
-  	<servlet-class>servlets.permanent</servlet-class>
-  </servlet>
+
   <servlet>
   	<servlet-name>Display</servlet-name>
   	<display-name>Display</display-name>
   	<description></description>
   	<servlet-class>servlets.Display</servlet-class>
   </servlet>
-  <servlet-mapping>
-  	<servlet-name>employee</servlet-name>
-  	<url-pattern>/employee</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>permanent</servlet-name>
-  	<url-pattern>/permanent</url-pattern>
-  </servlet-mapping>
+  <servlet>
+  	<servlet-name>Create</servlet-name>
+  	<display-name>Create</display-name>
+  	<description></description>
+  	<servlet-class>servlets.Create</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>Delete</servlet-name>
+  	<display-name>Delete</display-name>
+  	<description></description>
+  	<servlet-class>servlets.Delete</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>Display</servlet-name>
   	<url-pattern>/Display</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>Create</servlet-name>
+  	<url-pattern>/Create</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>Delete</servlet-name>
+  	<url-pattern>/Delete</url-pattern>
   </servlet-mapping>
 </web-app>

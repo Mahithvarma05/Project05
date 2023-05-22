@@ -1,9 +1,7 @@
- package servlets;
+package servlets;
 
 import java.io.IOException;
-
 import java.io.PrintWriter;
-
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,32 +13,36 @@ import com.google.gson.Gson;
 import Methods.EmpDaoImpl;
 import pojoClass.Pojo;
 
-/**
- * Servlet implementation class Display
- */
-public class Display extends HttpServlet {
+
+public class Create extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    
+
+	public final Gson gson;
+	public final EmpDaoImpl daoImpl;
+	
+    public Create(){
+    	gson = new Gson();
+    	daoImpl = new EmpDaoImpl();
+    	
+    }
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		Gson gson=new Gson();
-		Pojo obj = gson.fromJson(request.getReader(), Pojo.class);
-		
-		EmpDaoImpl emp=new EmpDaoImpl();
-		PrintWriter out=response.getWriter();
-		Pojo e=emp.viewJSON(obj.getId());
-		String s=gson.toJson(e);
+		Pojo obj  = gson.fromJson(request.getReader(), Pojo.class);
+		daoImpl.createEmployee(obj);
+		PrintWriter out = response.getWriter();
+		String jsonC = gson.toJson(obj);
 		response.setContentType("application/JSON");
-		out.println(s);
-		
+		out.print(jsonC);
 		
 	}
 
-	@Override
-	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		super.doPut(req, resp);
+		
+			
 	}
-}
 
+}

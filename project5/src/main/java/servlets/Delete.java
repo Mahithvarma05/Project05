@@ -1,9 +1,7 @@
- package servlets;
+package servlets;
 
 import java.io.IOException;
-
 import java.io.PrintWriter;
-
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,31 +14,28 @@ import Methods.EmpDaoImpl;
 import pojoClass.Pojo;
 
 /**
- * Servlet implementation class Display
+ * Servlet implementation class Delete
  */
-public class Display extends HttpServlet {
+public class Delete extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    
+	public final Gson gson;
+	public final EmpDaoImpl daoImpl;
+	
+    public Delete() {
+        gson = new Gson();
+        daoImpl = new EmpDaoImpl();
+        // TODO Auto-generated constructor stub
+    }
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		Gson gson=new Gson();
 		Pojo obj = gson.fromJson(request.getReader(), Pojo.class);
-		
-		EmpDaoImpl emp=new EmpDaoImpl();
-		PrintWriter out=response.getWriter();
-		Pojo e=emp.viewJSON(obj.getId());
-		String s=gson.toJson(e);
-		response.setContentType("application/JSON");
-		out.println(s);
-		
+		daoImpl.delete(obj.getId());
+		PrintWriter out = response.getWriter();
+		out.println("Deleted");
 		
 	}
+	
+	
 
-	@Override
-	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doPut(req, resp);
-	}
 }
-
