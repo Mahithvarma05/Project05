@@ -22,19 +22,21 @@ import pojoClass.Pojo;
  */
 public class Display extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    
+	 public static Connection c; 
+	 
+	 
+	 public Display() {
+		 c=DbConnection.getConnection();
+	 }
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		ServletContext context = request.getServletContext();
-		DbConnection db = (DbConnection)context.getAttribute("Db");
-		Connection connection = db.getConnection();
+		
 		Gson gson=new Gson();
 		Pojo obj = gson.fromJson(request.getReader(), Pojo.class);
 		
 		EmpDaoImpl emp=new EmpDaoImpl();
 		PrintWriter out=response.getWriter();
-		Pojo e=emp.viewJSON(obj.getId(),connection);
+		Pojo e=emp.viewJSON(obj.getId(),c);
 		
 		if(e==null) {
 			out.println("Not found in data base");

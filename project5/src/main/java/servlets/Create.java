@@ -20,7 +20,7 @@ import pojoClass.Pojo;
 
 public class Create extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    public static Connection c;   
 
 	public final Gson gson;
 	public final EmpDaoImpl daoImpl;
@@ -28,15 +28,11 @@ public class Create extends HttpServlet {
     public Create(){
     	gson = new Gson();
     	daoImpl = new EmpDaoImpl();
-    	
+    	c=DbConnection.getConnection();
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		ServletContext context = request.getServletContext();
-		DbConnection lis = (DbConnection)context.getAttribute("Db");
-		Connection c = lis.getConnection();
-		// TODO Auto-generated method stub
 		Pojo obj  = gson.fromJson(request.getReader(), Pojo.class);
 		daoImpl.createEmployee(obj,c);
 		

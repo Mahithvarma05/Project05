@@ -26,8 +26,6 @@ public class Listener implements ServletContextListener {
      */
     public void contextDestroyed(ServletContextEvent sce)  { 
     	try {
-    		DbConnection con = new DbConnection();
-			con.getConnection().close();
 			System.out.println("End");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -39,9 +37,8 @@ public class Listener implements ServletContextListener {
      */
     public void contextInitialized(ServletContextEvent sce)  { 
     	System.out.println("Started");
-    	DbConnection lis = new DbConnection();
-    	ServletContext context = sce.getServletContext();
-    	context.setAttribute("Db", lis);
+    	DbConnection.datasource();
+
     }
 	
 }

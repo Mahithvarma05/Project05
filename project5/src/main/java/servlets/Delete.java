@@ -21,26 +21,26 @@ import pojoClass.Pojo;
  */
 public class Delete extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	public final Gson gson;
-	public final EmpDaoImpl daoImpl;
+	 public static Connection c;   
+
+		public final Gson gson;
+		public final EmpDaoImpl daoImpl;
 	
     public Delete() {
         gson = new Gson();
         daoImpl = new EmpDaoImpl();
+        c=DbConnection.getConnection();
         // TODO Auto-generated constructor stub
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		ServletContext context = request.getServletContext();
-		DbConnection db = (DbConnection)context.getAttribute("Db");
-		Connection connection = db.getConnection();
+
 		Pojo obj = gson.fromJson(request.getReader(), Pojo.class);
-		daoImpl.delete(obj.getId(),connection);
+		daoImpl.delete(obj.getId(),c);
 		PrintWriter out = response.getWriter();
 		out.println("Deleted");
-		
+			
 	}
 	
 	
