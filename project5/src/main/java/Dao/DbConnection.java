@@ -12,29 +12,37 @@ import javax.sql.DataSource;
 public class DbConnection {
 
 	
-	public static Connection connection;
+	static Connection connection;
 	static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(DbConnection.class);
-	
+	static DataSource dataSource;
+	public static DataSource DSource() {
+		     
+            Context initContext;
+			try {
+				initContext = new InitialContext();
+				Context envContext = (Context)initContext.lookup("java:/comp/env");
+				dataSource = (DataSource)envContext.lookup("jdbc/empdb");
+				} catch (NamingException e) {
+				e.printStackTrace();
+				}
+			return dataSource;
+			}
+
 	
     public Connection getConnection() {
-        try {
+     
         
-            Context initContext = new InitialContext();
-            Context envContext = (Context)initContext.lookup("java:/comp/env");
-            DataSource dataSource = (DataSource)envContext.lookup("jdbc/empdb");
             try {
-                connection= dataSource.getConnection();
+            	
+                connection= DSource().getConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
                 log.error(" SQLException Error");
                 
             }
             return connection;
-        } catch (NamingException e) {
-            e.printStackTrace();
-            log.info(" NamingException Error");
-        }
-        return connection ;
+        
+     
         
     }
 }

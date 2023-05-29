@@ -27,7 +27,8 @@ public class Listener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent sce)  { 
     	try {
     		DbConnection con = new DbConnection();
-			con.connection.close();
+			con.getConnection().close();
+			System.out.println("End");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

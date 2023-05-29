@@ -147,7 +147,8 @@ public class EmpDaoImpl {
 		String type=emp.getType();
 		String query="insert into employee values(?,?,?,?)";
 	
-		insert(query,emp,c);		
+		insert(query,emp,c);
+		
 			String queryp;
 			
 			switch(type) {			
